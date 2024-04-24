@@ -170,3 +170,39 @@ The query is the set of key-value pairs that go after the `?` in a URL, separate
 For example, in the URL: [http://127.0.0.1:8000/items/?skip=0\&limit=10](http://127.0.0.1:8000/items/?skip=0\&limit=10)
 
 These are the basics, FastAPI supports more complex [query parameters and string validations](https://fastapi.tiangolo.com/tutorial/query-params-str-validations/).
+
+### Request Body
+
+To declare a request body, you use Pydantic models with all their power and benefits.
+
+```python
+from typing import Optional
+from pydantic import BaseModel
+
+
+class Item(BaseModel):
+    name: str
+    description: Optional[str] = None
+    price: float
+    tax: Optional[float] = None
+
+
+@app.post("/items/")
+async def create_item(item: Item):
+    return item
+```
+
+With just that Python type declaration, FastAPI will:
+
+* Read the body of the request as JSON.
+* Convert the corresponding types (if needed).
+* Validate the data: If the data is invalid, it will return a nice and clear error, indicating exactly where and what was the incorrect data.
+* Give you the received data in the parameter `item`.
+* Generate JSON Schema definitions for your model.
+* Those schemas will be part of the generated OpenAPI schema, and used by the automatic documentation UIs.
+
+These are the basics, FastAPI supports more complex patterns such as:
+
+* [Using multiple models in the same query](https://fastapi.tiangolo.com/tutorial/body-multiple-params/).
+* [Additional validations of the pydantic models](https://fastapi.tiangolo.com/tutorial/body-fields/).
+* [Nested models](https://fastapi.tiangolo.com/tutorial/body-nested-models/).

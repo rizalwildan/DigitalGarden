@@ -99,3 +99,45 @@ You can track a remote release with the command
 ```bash
 $ git flow release track RELEASE
 ```
+
+**Finish up a release**
+
+Finishing a release is one of the big steps in git branching. It performs several actions:
+
+* Merges the release branch back into `main`
+* Tags the release with its name
+* Back-merges the release into `develop`
+* Removes the release branch
+
+```bash
+$ git flow release finish RELEASE
+```
+
+Don't forget to push your tags with
+
+```bash
+$ git push origin --tags
+```
+
+#### 4. Hotfixes
+
+* Hotfixes arise from the necessity to act immediately upon an undesired state of a live production version
+* May be branched off from the corresponding tag on the master branch that marks the production version.
+
+**Git flow hotfixes start**
+
+Like the other git flow commands, a hotfix is started with
+
+```bash
+$ git flow hotfix start VERSION [BASENAME]
+```
+
+The version argument hereby marks the new hotfix release name. Optionally you can specify a basename to start from.
+
+**Finish hotfixes**
+
+By finishing a hotfix it gets merged back into develop and master. Additionally the master merge is tagged with the hotfix version.
+
+```bash
+$ git flow hotfix finish VERSION
+```
